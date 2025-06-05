@@ -593,7 +593,12 @@ def resolveFunctionChunks(analyzer, scs):
     for sc in scs:
         for function in sc.functions:
             outer_blocks = []
-            for block in idaapi.FlowChart(function.func_t):
+            try:
+                flow = idaapi.FlowChart(function.func_t)
+            except:
+                import ida_gdl
+                flow = ida_gdl.FlowChart(function.func_t)
+            for block in flow:
                 if block.end_ea < function.start_ea or function.end_ea <= block.start_ea:
                     try:
                         block_function = sark.Function(block.start_ea)
@@ -617,7 +622,12 @@ def resolveFunctionChunks(analyzer, scs):
     for sc in scs:
         for function in sc.functions:
             outer_blocks = []
-            for block in idaapi.FlowChart(function.func_t):
+            try:
+                flows = idaapi.FlowChart(function.func_t)
+            except:
+                import ida_gdl
+                flows = ida_gdl.FlowChart(function.func_t)
+            for block in flows:
                 if block.end_ea < function.start_ea or function.end_ea <= block.start_ea:
                     try:
                         block_function = sark.Function(block.start_ea)
