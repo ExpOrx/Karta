@@ -497,7 +497,11 @@ class IDA(DisasAPI):
         Return Value:
             A collection of basic block instances
         """
-        return idaapi.FlowChart(func_ctx.func_t)
+        try:
+            return idaapi.FlowChart(func_ctx.func_t)
+        except:
+            import ida_gdl
+            return ida_gdl.FlowChart(func_ctx.func_t)
 
     # Overridden base function
     def blockStart(self, block_ctx):
