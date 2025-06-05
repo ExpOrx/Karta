@@ -199,7 +199,11 @@ class AnalyzerIDA(object):
         context.setInstrCount(instr_count)
 
         # Now, record the code blocks
-        flow = idaapi.FlowChart(func.func_t)
+        try:
+            flow = idaapi.FlowChart(func.func_t)
+        except:
+            import ida_gdl
+            flow = ida_gdl.FlowChart(func.func_t)
         for block in flow:
             try:
                 context.recordBlock(len(list(sark.CodeBlock(block.start_ea).lines)))
@@ -226,7 +230,11 @@ class AnalyzerIDA(object):
         """
         island_guess = None
         func = sark.Function(func_ea)
-        flow = idaapi.FlowChart(func.func_t)
+        try:
+            flow = idaapi.FlowChart(func.func_t)
+        except:
+            import ida_gdl
+            flow = ida_gdl.FlowChart(func.func_t)
         for block in flow:
             if range_start <= block.start_ea and block.end_ea <= range_end:
                 if island_guess is None or block.start_ea < island_guess.start_ea:
